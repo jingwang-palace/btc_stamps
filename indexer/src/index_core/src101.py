@@ -65,34 +65,38 @@ class Src101Validator:
         # dec_pattern = re.compile(r"^[0-9]+$")
 
         for key, value in list(self.src101_dict.items()):
-            if value == "":
+            try:
+                if value == "":
+                    self.src101_dict[key] = None
+                elif key in ["imglp", "imgf", "img"]:
+                    self.src101_dict[key] = value
+                elif key in ["tick"]:
+                    self._process_tick_value(key, value)
+                elif key in ["tokenid"]:
+                    self._process_tokenid_value(key, value)
+                elif key in ["hash"]:
+                    self._process_hash_value(key, value)
+                elif key in ["pri"]:
+                    self._process_pri_value(key, value)
+                elif key in ["wla"]:
+                    self._process_wla_value(key, value)
+                elif key in ["prim"]:
+                    self._process_bool_value(key, value)
+                elif key in ["type", "data"]:
+                    self._process_type_data_value(key, value)
+                elif key in ["owner", "toaddress"]:
+                    self._prceess_address_value(key, value)
+                elif key in ["rec"]:
+                    self._process_addresslist_value(key, value)
+                elif key in ["p", "op"]:
+                    self._process_uppercase_value(key, value)
+                elif key in ["root"]:
+                    self._process_lowercase_value(key, value)
+                elif key in ["lim", "dua", "idua", "mintstart", "mintend", "coef"]:
+                    self._apply_regex_validation(key, value, num_pattern)
+            except Exception as e:
+                logger.warning(e)
                 self.src101_dict[key] = None
-            elif key in ["imglp", "imgf", "img"]:
-                self.src101_dict[key] = value
-            elif key in ["tick"]:
-                self._process_tick_value(key, value)
-            elif key in ["tokenid"]:
-                self._process_tokenid_value(key, value)
-            elif key in ["hash"]:
-                self._process_hash_value(key, value)
-            elif key in ["pri"]:
-                self._process_pri_value(key, value)
-            elif key in ["wla"]:
-                self._process_wla_value(key, value)
-            elif key in ["prim"]:
-                self._process_bool_value(key, value)
-            elif key in ["type", "data"]:
-                self._process_type_data_value(key, value)
-            elif key in ["owner", "toaddress"]:
-                self._prceess_address_value(key, value)
-            elif key in ["rec"]:
-                self._process_addresslist_value(key, value)
-            elif key in ["p", "op"]:
-                self._process_uppercase_value(key, value)
-            elif key in ["root"]:
-                self._process_lowercase_value(key, value)
-            elif key in ["lim", "dua", "idua", "mintstart", "mintend", "coef"]:
-                self._apply_regex_validation(key, value, num_pattern)
 
         if "type" in self.src101_dict.keys() and "data" in self.src101_dict.keys():
             self.src101_dict[self.src101_dict["type"] + "_data"] = self.src101_dict["data"]
