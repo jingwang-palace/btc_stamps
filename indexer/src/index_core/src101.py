@@ -1001,9 +1001,9 @@ def update_owner_table(db, owner_updates, block_index):
                     f"""
                     UPDATE {SRC101_OWNERS_TABLE}
                     SET prim = FALSE
-                    WHERE address_btc = %s AND prim = TRUE;
+                    WHERE address_btc = %s AND deploy_hash = %s AND prim = TRUE;
                     """,
-                    (owner_dict["address_btc"],),
+                    (owner_dict["address_btc"], owner_dict["deploy_hash"],),
                 )
             cursor.execute(
                 f"""
