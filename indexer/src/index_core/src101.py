@@ -707,7 +707,7 @@ class Src101Processor:
                     if "eth" in self.src101_dict["address_data"].keys()
                     else address_eth
                 )
-            if self.src101_dict["prim"] == True and self.src101_dict.get("address_data").get("btc") != self.src101_dict.get(
+            if self.src101_dict["prim"] == True and self.src101_dict.get("address_data") and self.src101_dict.get("address_data").get("btc") != self.src101_dict.get(
                 "creator"
             ):
                 self.set_status_and_log(
